@@ -1,4 +1,4 @@
-const API_KEY = '0dc64ed4d5db4477a23664d96c4b9657'; // Pegue em https://rawg.io/apidocs
+const API_KEY = '0dc64ed4d5db4477a23664d96c4b9657';
 
 // Elementos
 const gameContainer = document.getElementById("game-container");
