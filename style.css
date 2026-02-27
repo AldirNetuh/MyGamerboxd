@@ -86,7 +86,7 @@ body {
 .search-box {
     display: flex;
     align-items: center;
-    background: #2c3440;
+    background: #1a1f2b;
     border-radius: 20px;
     padding: 5px 15px;
 }
@@ -94,7 +94,7 @@ body {
 .search-box input {
     background: transparent;
     border: none;
-    color: #2c3440;
+    color: #eff6ff;
     padding: 8px;
     outline: none;
     width: 200px;
