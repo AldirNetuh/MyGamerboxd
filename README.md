@@ -15,16 +15,6 @@ Um diário de jogos pessoal inspirado no Letterboxd. O projeto consome a API da 
 - **HTML5 Semântico**
 - **CSS3 Moderno** (Grid Layout, Flexbox, Variáveis CSS, Glassmorphism)
 - **JavaScript Vanilla** (Fetch API, DOM Manipulation, Async/Await)
-- **API Externa:** [RAWG.io](https://rawg.io/apidocs)
-
-## 🚀 Como Rodar o Projeto
-
-1. Clone este repositório.
-2. Crie uma conta na [RAWG.io](https://rawg.io/apidocs) e pegue sua **API Key** (é grátis).
-3. Abra o arquivo `script.js`.
-4. Na linha 1, substitua `'SUA_CHAVE_AQUI'` pela sua chave real:
-   ```javascript
-   const API_KEY = 'insira-sua-chave-aqui';
-
+- 
 ---
 Desenvolvido por [Aldir](https://github.com/AldirNetuh) 🚀
