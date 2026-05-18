@@ -1,4 +1,4 @@
-package com.example.mygamerboxd.entity;
+package com.aldirneto.mygamerboxd.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

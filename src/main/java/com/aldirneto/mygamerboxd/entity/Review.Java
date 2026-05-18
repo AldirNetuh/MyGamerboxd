@@ -1,4 +1,4 @@
-package com.example.mygamerboxd.entity;
+package com.aldirneto.mygamerboxd.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
