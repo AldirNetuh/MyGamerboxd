@@ -17,7 +17,6 @@ public class JogoController{
     public ResponseEntity<List<JogoResponseDTO> listarTodos() {
         return ResponseEntity.ok(jogaService.listarTodos());
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<JogoResponseDTO> buscarPorId(@PathVariable Long id){
         return ResponseEntity.ok(jogaService.buscarPorId(id));
