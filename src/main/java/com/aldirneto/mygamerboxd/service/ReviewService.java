@@ -5,6 +5,7 @@ import com.aldirneto.mygamerboxd.dto.ReviewResponseDTO;
 import com.aldirneto.mygamerboxd.entity.Jogo;
 import com.aldirneto.mygamerboxd.entity.Review;
 import com.aldirneto.mygamerboxd.entity.Usuario;
+import com.aldirneto.mygamerboxd.exception.ResourceNotFoundException;
 import com.aldirneto.mygamerboxd.repository.JogoRepository;
 import com.aldirneto.mygamerboxd.repository.ReviewRepository;
 import com.aldirneto.mygamerboxd.repository.UsuarioRepository;
@@ -50,9 +51,10 @@ public class ReviewService {
     @Transactional
     public ReviewResponseDTO criar(ReviewRequestDTO dto) {
         Jogo jogo = jogoRepository.findById(dto.getJogoId())
-                .orElseThrow(() -> new ResourcNotFoundException("Jogo não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado."));
+        
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
-                .orElseThrow(() -> new ResourcNotFoundException("Usuário não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
 
         Review review = new Review();
         review.setNota(dto.getNota());

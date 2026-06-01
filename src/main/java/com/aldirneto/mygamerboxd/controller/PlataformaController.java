@@ -1,36 +1,45 @@
 package com.aldirneto.mygamerboxd.controller;
+
 import com.aldirneto.mygamerboxd.dto.PlataformaRequestDTO;
 import com.aldirneto.mygamerboxd.dto.PlataformaResponseDTO;
-import com.aldirneto.mygamerboxd.service.PLataformaService;
+import com.aldirneto.mygamerboxd.service.PlataformaService;
 import jakarta.validation.Valid;
-import org.springFramework.beans.factory.annotation.Autowired;
-import org.springFramework.http.HttpStatus;
-import org.springFramework.http.ResponseEntity;
-import org.springFramework.web.binc.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
 @RestController
-@RequestMapping("/api/platformas")
-public class PLataformaController {
+@RequestMapping("/api/plataformas")
+public class PlataformaController {
+
     @Autowired
-    private class PLataformaService plataformaService;
+    private PlataformaService plataformaService;
+
     @GetMapping
-    public ResponseEntity<list<PlataformaRequestDTO>> listarTodas(){
+    public ResponseEntity<List<PlataformaResponseDTO>> listarTodas() {
         return ResponseEntity.ok(plataformaService.listarTodas());
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<PlataformaResponseDTO> buscarPorId(@PathVariable Long id){
-        return ResponseEntity.ok(plataformaService.buscarPorId(id))
+    public ResponseEntity<PlataformaResponseDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(plataformaService.buscarPorId(id));
     }
+
     @PostMapping
-    public ResponseEntity<PlataformaResponseDTO> criar(@Valid @RequestBody PlataformaRequestDTO dto){
-        return REsponseEsntity.status(HttpStatus.CREATED).body(plataformaService.criar(dto));
+    public ResponseEntity<PlataformaResponseDTO> criar(@Valid @RequestBody PlataformaRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(plataformaService.criar(dto));
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<PlataformaResponseDTO> atualizar(@PathVariable Lond id, @Valid @RequestBody PlataformaRequestDTO dto){
+    public ResponseEntity<PlataformaResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody PlataformaRequestDTO dto) {
         return ResponseEntity.ok(plataformaService.atualizar(id, dto));
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id){
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
         plataformaService.deletar(id);
         return ResponseEntity.noContent().build();
     }

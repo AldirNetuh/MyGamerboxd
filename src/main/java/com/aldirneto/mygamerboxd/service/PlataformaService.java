@@ -3,6 +3,7 @@ package com.aldirneto.mygamerboxd.service;
 import com.aldirneto.mygamerboxd.dto.PlataformaRequestDTO;
 import com.aldirneto.mygamerboxd.dto.PlataformaResponseDTO;
 import com.aldirneto.mygamerboxd.entity.Plataforma;
+import com.aldirneto.mygamerboxd.exception.ResourceNotFoundException;
 import com.aldirneto.mygamerboxd.repository.PlataformaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,8 @@ public class PlataformaService {
 
     @Transactional(readOnly = true)
     public PlataformaResponseDTO buscarPorId(Long id) {
-        Plataforma plataforma = plataformaRepository.findById(id).orElseThrow(() -> new ResourcNotFoundException("Plataforma não encontrada."));
+        Plataforma plataforma = plataformaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Plataforma não encontrada."));
         return converterParaDTO(plataforma);
     }
 
@@ -44,7 +46,8 @@ public class PlataformaService {
 
     @Transactional
     public PlataformaResponseDTO atualizar(Long id, PlataformaRequestDTO dto) {
-        Plataforma plataforma = plataformaRepository.findById(id).orElseThrow(() -> new ResourcNotFoundException("Plataforma não encontrada."));
+        Plataforma plataforma = plataformaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Plataforma não encontrada."));
         plataforma.setNome(dto.getNome());
         return converterParaDTO(plataformaRepository.save(plataforma));
     }

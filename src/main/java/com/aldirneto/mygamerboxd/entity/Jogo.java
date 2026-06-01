@@ -1,29 +1,55 @@
 package com.aldirneto.mygamerboxd.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "plataformas")
+@Table(name = "jogos")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "jogos")
 @EqualsAndHashCode(of = "id")
-public class Plataforma {
+public class Jogo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
-    private String nome;
+    @Column(nullable = false, unique = true)
+    private String titulo;
 
-    @ManyToMany(mappedBy = "plataformas")
-    @JsonIgnore
-    private Set<Jogo> jogos = new HashSet<>();
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
+
+    @Column(precision = 4, scale = 2)
+    private BigDecimal notaMedia = BigDecimal.ZERO;
+
+    // Relacionamento com Genero (Cria a tabela intermediária jogo_genero)
+    @ManyToMany
+    @JoinTable(
+        name = "jogo_genero",
+        joinColumns = @JoinColumn(name = "jogo_id"),
+        inverseJoinColumns = @JoinColumn(name = "genero_id")
+    )
+    private Set<Genero> generos = new HashSet<>();
+
+    // Relacionamento com Plataforma (Cria a tabela intermediária jogo_plataforma)
+    @ManyToMany
+    @JoinTable(
+        name = "jogo_plataforma",
+        joinColumns = @JoinColumn(name = "jogo_id"),
+        inverseJoinColumns = @JoinColumn(name = "plataforma_id")
+    )
+    private Set<Plataforma> plataformas = new HashSet<>();
+
+    // Relacionamento com Review (Um jogo tem várias reviews)
+    @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 }

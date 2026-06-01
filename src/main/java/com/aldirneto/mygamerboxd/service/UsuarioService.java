@@ -5,6 +5,7 @@ import com.aldirneto.mygamerboxd.dto.UsuarioResponseDTO;
 import com.aldirneto.mygamerboxd.entity.Admin;
 import com.aldirneto.mygamerboxd.entity.Jogador;
 import com.aldirneto.mygamerboxd.entity.Usuario;
+import com.aldirneto.mygamerboxd.exception.ResourceNotFoundException;
 import com.aldirneto.mygamerboxd.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,8 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public UsuarioResponseDTO buscarPorId(Long id) {
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourcNotFoundException("Usuário não encontrado."));
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
         return converterParaDTO(usuario);
     }
 
