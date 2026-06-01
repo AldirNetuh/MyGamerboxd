@@ -20,7 +20,6 @@ public class CalculoPonderado implements CalculadoraScore {
         BigDecimal somaPesos = BigDecimal.ZERO;
 
         for (Review r : reviews) {
-            // O polimorfismo brilhando: se o usuário da review for uma instância de Admin, o peso é 2.
             BigDecimal peso = (r.getUsuario() instanceof Admin) ? new BigDecimal("2") : BigDecimal.ONE;
             
             somaPonderada = somaPonderada.add(r.getNota().multiply(peso));

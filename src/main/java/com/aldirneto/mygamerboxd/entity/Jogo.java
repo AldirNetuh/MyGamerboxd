@@ -31,7 +31,6 @@ public class Jogo {
     @Column(precision = 4, scale = 2)
     private BigDecimal notaMedia = BigDecimal.ZERO;
 
-    // Relacionamento com Genero (Cria a tabela intermediária jogo_genero)
     @ManyToMany
     @JoinTable(
         name = "jogo_genero",
@@ -40,7 +39,6 @@ public class Jogo {
     )
     private Set<Genero> generos = new HashSet<>();
 
-    // Relacionamento com Plataforma (Cria a tabela intermediária jogo_plataforma)
     @ManyToMany
     @JoinTable(
         name = "jogo_plataforma",
@@ -49,7 +47,6 @@ public class Jogo {
     )
     private Set<Plataforma> plataformas = new HashSet<>();
 
-    // Relacionamento com Review (Um jogo tem várias reviews)
-    @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "jogo", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 }

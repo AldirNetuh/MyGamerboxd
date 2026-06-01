@@ -25,8 +25,7 @@ public class Review {
 
     @Column(columnDefinition = "TEXT")
     private String texto;
-
-    // Relacionamento
+    
     @ManyToOne
     @JoinColumn(name = "jogo_id", nullable = false)
     private Jogo jogo;

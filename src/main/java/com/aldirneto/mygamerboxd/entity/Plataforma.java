@@ -24,7 +24,6 @@ public class Plataforma {
     @Column(nullable = false, unique = true, length = 50)
     private String nome;
 
-    // Relacionamento
     @ManyToMany(mappedBy = "plataformas")
     @JsonIgnore
     private Set<Jogo> jogos = new HashSet<>();
