@@ -2,17 +2,19 @@ package com.aldirneto.mygamerboxd.repository;
 
 import com.aldirneto.mygamerboxd.entity.Jogo;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
 public interface JogoRepository extends JpaRepository<Jogo, Long> {
-    
-    // Buscar Jogo com a palavra do título
+
+    @Query("SELECT j FROM Jogo j LEFT JOIN FETCH j.reviews WHERE j.id = :id")
+    Optional<Jogo> findByIdWithReviews(@Param("id") Long id);
+
+    @Query("SELECT DISTINCT j FROM Jogo j LEFT JOIN FETCH j.reviews")
+    List<Jogo> findAllWithReviews();
+
     List<Jogo> findByTituloContainingIgnoreCase(String titulo);
-    
-    // Buscar Por Nota maior ou igual ao valor informado
-    List<Jogo> findByNotaMediaGreaterThanEqual(BigDecimal nota);
 }

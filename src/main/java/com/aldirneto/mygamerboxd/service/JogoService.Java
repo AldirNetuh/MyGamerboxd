@@ -9,10 +9,12 @@ import com.aldirneto.mygamerboxd.exception.ResourceNotFoundException;
 import com.aldirneto.mygamerboxd.repository.GeneroRepository;
 import com.aldirneto.mygamerboxd.repository.JogoRepository;
 import com.aldirneto.mygamerboxd.repository.PlataformaRepository;
+import com.aldirneto.mygamerboxd.strategy.CalculadoraScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,23 +31,32 @@ public class JogoService {
     @Autowired
     private PlataformaRepository plataformaRepository;
 
+   @Autowired
+    @org.springframework.beans.factory.annotation.Qualifier("calculoAritmetico")
+    private CalculadoraScore calculadoraScore;
+
     private JogoResponseDTO converterParaDTO(Jogo jogo) {
         JogoResponseDTO dto = new JogoResponseDTO();
         dto.setId(jogo.getId());
         dto.setTitulo(jogo.getTitulo());
         dto.setDescricao(jogo.getDescricao());
-        dto.setNotaMedia(jogo.getNotaMedia());
+        
+        BigDecimal media = calculadoraScore.calcular(jogo.getReviews());
+        dto.setNotaMedia(media);
+        
         return dto;
     }
 
     @Transactional(readOnly = true)
     public List<JogoResponseDTO> listarTodos() {
-        return jogoRepository.findAll().stream().map(this::converterParaDTO).collect(Collectors.toList());
+        // Força a busca trazendo as reviews associadas
+        return jogoRepository.findAllWithReviews().stream().map(this::converterParaDTO).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public JogoResponseDTO buscarPorId(Long id) {
-        Jogo jogo = jogoRepository.findById(id)
+        // Força a busca trazendo as reviews associadas
+        Jogo jogo = jogoRepository.findByIdWithReviews(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado."));
         return converterParaDTO(jogo);
     }
@@ -69,7 +80,7 @@ public class JogoService {
 
     @Transactional
     public JogoResponseDTO atualizar(Long id, JogoRequestDTO dto) {
-        Jogo jogo = jogoRepository.findById(id)
+        Jogo jogo = jogoRepository.findByIdWithReviews(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado."));
         
         jogo.setTitulo(dto.getTitulo());
@@ -85,7 +96,6 @@ public class JogoService {
         jogoRepository.deleteById(id);
     }
 
-    // Isola a lógica para respeitar DRY (Don't Repeat Yourself)
     private void vincularRelacionamentos(Jogo jogo, JogoRequestDTO dto) {
         if (dto.getGenerosIds() != null && !dto.getGenerosIds().isEmpty()) {
             List<Genero> generos = generoRepository.findAllById(dto.getGenerosIds());
