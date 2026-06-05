@@ -1,21 +1,19 @@
 package com.aldirneto.mygamerboxd;
 
-import com.aldirneto.mygamerboxd.strategy.CalculoAritmetico;
-import com.aldirneto.mygamerboxd.strategy.CalculoPonderado;
-import com.aldirneto.mygamerboxd.entity.Admin;
-import java.util.Arrays;
-import java.util.ArrayList;
 import com.aldirneto.mygamerboxd.entity.Jogador;
 import com.aldirneto.mygamerboxd.entity.Jogo;
 import com.aldirneto.mygamerboxd.entity.Review;
+import com.aldirneto.mygamerboxd.strategy.CalculoAritmetico;
+import com.aldirneto.mygamerboxd.strategy.CalculoPonderado;
+import com.aldirneto.mygamerboxd.entity.Admin;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 class MygamerboxdApplicationTests {
 
     @Test
