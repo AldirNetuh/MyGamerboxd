@@ -1,17 +1,139 @@
-# MyGamerBoxd API
+# 🎮 MyGamerBoxd API
 
-API REST desenvolvida em Java com Spring Boot para o gerenciamento de catálogos e avaliações de jogos. O sistema atua como o motor back-end da plataforma, expondo endpoints para cadastro de usuários, jogos e processamento de notas.
+API REST desenvolvida em **Java com Spring Boot** para gerenciamento de catálogos e avaliações de jogos. O sistema atua como o motor back-end da plataforma, seguindo a arquitetura **Cliente-Servidor (Stateless)** e expondo endpoints RESTful para operações de cadastro, consulta, atualização e remoção de jogos.
+---
+## 🚀 Tecnologias Utilizadas
+* Java 17
+* Spring Boot 3.2.x
+* Spring Data JPA / Hibernate
+* H2 Database (em memória)
+* JUnit 5
+* Mockito
+* JaCoCo
+* SpringDoc OpenAPI (Swagger)
+* Maven
+  
+---
+## 📋 Pré-requisitos
+Antes de iniciar, certifique-se de possuir:
+* Java 17 ou superior instalado
+* Maven 3.8+ instalado
+Ou utilize o Maven Wrapper incluído no projeto:
+```bash
+./mvnw
+```
 
-## 🛠️ Tecnologias Utilizadas
-* **Java** * **Spring Boot**
-* **Swagger (OpenAPI)** para documentação e testes
-* **Maven** para gerenciamento de dependências
+---
+## ⚙️ Instalação
+Clone o repositório e instale as dependências:
+```bash
+git clone https://github.com/SEU_USUARIO/mygamerboxd.git
+cd mygamerboxd
+./mvnw clean install
+```
+---
 
-## 🧠 Arquitetura e Conceitos Aplicados
+## ▶️ Executando a Aplicação
 
-O projeto foi projetado sob o modelo **Cliente-Servidor**, atuando em conjunto com os princípios de Programação Orientada a Objetos (POO) e boas práticas de software:
+Para iniciar o servidor:
 
-* **Arquitetura Cliente-Servidor (Objetivo Principal):** A API atua como o **Servidor** centralizado, responsável pelo processamento de requisições, validação de regras de negócio e gestão de dados. Isso garante o desacoplamento total, permitindo que múltiplos **Clientes** (como a futura interface em HTML/JS) consumam os recursos via requisições HTTP (REST) de forma independente.
-* **Herança e Classes Abstratas:** Centralização da lógica de usuários através da classe mãe abstrata `Usuario`, estendida pelas classes filhas `Jogador` e `Admin`. Isso garante a separação de privilégios e elimina a repetição de código.
-* **Polimorfismo e Interfaces:** Implementação da interface `CalculadoraScore` para o processamento de avaliações. O sistema utiliza Injeção de Dependência do Spring Boot para definir em tempo de execução o tipo de cálculo (Aritmético ou Ponderado), garantindo flexibilidade e manutenção limpa.
-* **Tratamento de Exceptions:** Interceptação estruturada de falhas (como buscas por IDs inexistentes), garantindo retornos HTTP padronizados e previsíveis (ex: `404 Not Found`), protegendo a integridade da comunicação entre cliente e servidor.
+```bash
+./mvnw spring-boot:run
+```
+
+A aplicação ficará disponível em:
+
+```text
+http://localhost:8080
+```
+
+---
+
+## 🔗 URLs Úteis
+
+| Recurso    | URL                                   |
+| ---------- | ------------------------------------- |
+| API Base   | http://localhost:8080/api/v1          |
+| Swagger UI | http://localhost:8080/swagger-ui.html |
+| H2 Console | http://localhost:8080/h2-console      |
+
+---
+
+## 🎮 Endpoints Principais (Jogos)
+
+| Método | Endpoint             | Descrição                        |
+| ------ | -------------------- | -------------------------------- |
+| GET    | `/api/v1/jogos`      | Lista todos os jogos cadastrados |
+| GET    | `/api/v1/jogos/{id}` | Busca um jogo pelo ID            |
+| POST   | `/api/v1/jogos`      | Cadastra um novo jogo            |
+| PUT    | `/api/v1/jogos/{id}` | Atualiza um jogo existente       |
+| DELETE | `/api/v1/jogos/{id}` | Remove um jogo do banco          |
+
+### Códigos de Resposta
+
+| Código | Significado                              |
+| ------ | ---------------------------------------- |
+| 200    | Operação realizada com sucesso           |
+| 201    | Recurso criado                           |
+| 204    | Recurso removido sem conteúdo de retorno |
+| 404    | Recurso não encontrado                   |
+| 400    | Dados inválidos na requisição            |
+
+---
+
+## 📦 Exemplo de Uso (cURL)
+
+Criando um novo jogo:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/jogos \
+-H "Content-Type: application/json" \
+-d '{
+  "titulo": "The Witcher 3",
+  "descricao": "RPG de mundo aberto"
+}'
+```
+
+---
+
+## 🧪 Testes e Cobertura
+
+Para executar os testes unitários:
+
+```bash
+./mvnw clean test
+```
+
+O relatório de cobertura JaCoCo será gerado em:
+
+```text
+target/site/jacoco/index.html
+```
+
+---
+
+## 📊 Nota de Engenharia
+
+O esforço de testes foi concentrado estrategicamente na camada **Strategy**, responsável pelas regras de cálculo de notas e pelo comportamento polimórfico do sistema.
+
+Classes de transporte (**DTOs**) e componentes predominantemente estruturais foram classificados como débito técnico planejado, justificando a diferença entre a cobertura global e a cobertura crítica de negócio.
+
+---
+
+## 📖 Documentação da API
+
+Após iniciar a aplicação, a documentação interativa estará disponível através do Swagger:
+
+```text
+http://localhost:8080/swagger-ui.html
+```
+
+---
+## 👤 Autor
+
+* Aldir Neto
+  
+---
+
+## 📄 Licença
+Este projeto foi desenvolvido para fins acadêmicos e educacionais.
