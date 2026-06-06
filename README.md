@@ -1,139 +1,183 @@
 # 🎮 MyGamerBoxd API
 
-API REST desenvolvida em **Java com Spring Boot** para gerenciamento de catálogos e avaliações de jogos. O sistema atua como o motor back-end da plataforma, seguindo a arquitetura **Cliente-Servidor (Stateless)** e expondo endpoints RESTful para operações de cadastro, consulta, atualização e remoção de jogos.
+API REST para gerenciamento e catalogação de coleções de jogos, desenvolvida com foco em **Clean Architecture**, **SOLID**, **testabilidade** e **manutenibilidade**.
+
+O projeto permite o cadastro e gerenciamento de jogos, gêneros e plataformas, fornecendo uma base robusta para aplicações de catalogação e avaliação de games.
+
 ---
+
 ## 🚀 Tecnologias Utilizadas
+
+### Backend
+
 * Java 17
 * Spring Boot 3.2.x
-* Spring Data JPA / Hibernate
-* H2 Database (em memória)
+* Spring Data JPA
+* Hibernate
+
+### Banco de Dados
+
+* H2 Database (In-Memory)
+
+### Qualidade de Software
+
 * JUnit 5
 * Mockito
 * JaCoCo
+
+### Documentação
+
 * SpringDoc OpenAPI (Swagger)
-* Maven
-  
----
-## 📋 Pré-requisitos
-Antes de iniciar, certifique-se de possuir:
-* Java 17 ou superior instalado
-* Maven 3.8+ instalado
-Ou utilize o Maven Wrapper incluído no projeto:
-```bash
-./mvnw
-```
+
+### Build & Dependências
+
+* Apache Maven
 
 ---
-## ⚙️ Instalação
-Clone o repositório e instale as dependências:
+
+## 🏛️ Arquitetura
+
+O projeto foi estruturado seguindo os princípios de **Clean Architecture**, promovendo separação de responsabilidades e baixo acoplamento entre as camadas.
+
+### Principais Decisões de Design
+
+#### 🔒 Imutabilidade
+
+Utilização de **Java Records** para DTOs, reduzindo boilerplate e garantindo maior consistência e segurança na transferência de dados.
+
+#### 🔄 Extensibilidade
+
+Aplicação do padrão **Strategy** para regras de cálculo e classificação, permitindo adicionar novos comportamentos sem modificar implementações existentes, respeitando o princípio **Open/Closed (OCP)**.
+
+#### 🎯 Integridade dos Dados
+
+Configuração precisa dos campos numéricos com:
+
+```java
+@Column(precision = 4, scale = 2)
+```
+
+garantindo consistência aritmética para avaliações armazenadas no banco de dados.
+
+---
+
+## ✨ Funcionalidades
+
+* Cadastro de jogos
+* Associação de gêneros
+* Associação de plataformas
+* Avaliação de jogos
+* Documentação automática via Swagger
+* Persistência utilizando JPA/Hibernate
+* Testes unitários para regras de negócio
+
+---
+
+## ⚙️ Como Executar
+
+### Pré-requisitos
+
+* Java 17+
+* Maven 3.8+
+
+### Clone o projeto
+
 ```bash
 git clone https://github.com/SEU_USUARIO/mygamerboxd.git
 cd mygamerboxd
-./mvnw clean install
-```
----
-
-## ▶️ Executando a Aplicação
-
-Para iniciar o servidor:
-
-```bash
-./mvnw spring-boot:run
 ```
 
-A aplicação ficará disponível em:
-
-```text
-http://localhost:8080
-```
-
----
-
-## 🔗 URLs Úteis
-
-| Recurso    | URL                                   |
-| ---------- | ------------------------------------- |
-| API Base   | http://localhost:8080/api/v1          |
-| Swagger UI | http://localhost:8080/swagger-ui.html |
-| H2 Console | http://localhost:8080/h2-console      |
-
----
-
-## 🎮 Endpoints Principais (Jogos)
-
-| Método | Endpoint             | Descrição                        |
-| ------ | -------------------- | -------------------------------- |
-| GET    | `/api/v1/jogos`      | Lista todos os jogos cadastrados |
-| GET    | `/api/v1/jogos/{id}` | Busca um jogo pelo ID            |
-| POST   | `/api/v1/jogos`      | Cadastra um novo jogo            |
-| PUT    | `/api/v1/jogos/{id}` | Atualiza um jogo existente       |
-| DELETE | `/api/v1/jogos/{id}` | Remove um jogo do banco          |
-
-### Códigos de Resposta
-
-| Código | Significado                              |
-| ------ | ---------------------------------------- |
-| 200    | Operação realizada com sucesso           |
-| 201    | Recurso criado                           |
-| 204    | Recurso removido sem conteúdo de retorno |
-| 404    | Recurso não encontrado                   |
-| 400    | Dados inválidos na requisição            |
-
----
-
-## 📦 Exemplo de Uso (cURL)
-
-Criando um novo jogo:
-
-```bash
-curl -X POST http://localhost:8080/api/v1/jogos \
--H "Content-Type: application/json" \
--d '{
-  "titulo": "The Witcher 3",
-  "descricao": "RPG de mundo aberto"
-}'
-```
-
----
-
-## 🧪 Testes e Cobertura
-
-Para executar os testes unitários:
+### Executar testes
 
 ```bash
 ./mvnw clean test
 ```
 
-O relatório de cobertura JaCoCo será gerado em:
+### Iniciar aplicação
 
-```text
-target/site/jacoco/index.html
+```bash
+./mvnw spring-boot:run
 ```
-
----
-
-## 📊 Nota de Engenharia
-
-O esforço de testes foi concentrado estrategicamente na camada **Strategy**, responsável pelas regras de cálculo de notas e pelo comportamento polimórfico do sistema.
-
-Classes de transporte (**DTOs**) e componentes predominantemente estruturais foram classificados como débito técnico planejado, justificando a diferença entre a cobertura global e a cobertura crítica de negócio.
 
 ---
 
 ## 📖 Documentação da API
 
-Após iniciar a aplicação, a documentação interativa estará disponível através do Swagger:
+Após iniciar a aplicação, a documentação estará disponível em:
+
+### Swagger UI
 
 ```text
 http://localhost:8080/swagger-ui.html
 ```
 
----
-## 👤 Autor
+### H2 Console
 
-* Aldir Neto
-  
+```text
+http://localhost:8080/h2-console
+```
+
 ---
 
-## 📄 Licença
-Este projeto foi desenvolvido para fins acadêmicos e educacionais.
+## 📌 Exemplo de Requisição
+
+### POST `/api/v1/jogos`
+
+```json
+{
+  "titulo": "Elden Ring",
+  "generos": [1],
+  "plataformas": [1]
+}
+```
+
+---
+
+## 🧪 Qualidade e Testes
+
+O projeto utiliza **JaCoCo** para análise de cobertura de testes.
+
+A estratégia de testes foi concentrada principalmente na camada de regras de negócio (**Strategy Pattern**), onde está localizada a lógica mais crítica da aplicação, alcançando:
+
+* ✅ 100% de cobertura dos algoritmos de cálculo
+* ✅ Testes unitários com JUnit 5
+* ✅ Mocking com Mockito
+* ✅ Relatórios automatizados via JaCoCo
+
+### Executar testes
+
+```bash
+./mvnw clean test
+```
+
+### Gerar relatório
+
+```bash
+target/site/jacoco/index.html
+```
+
+---
+
+## 📂 Estrutura do Projeto
+
+```text
+src
+├── main
+│   ├── java
+│   │   ├── controller
+│   │   ├── service
+│   │   ├── repository
+│   │   ├── entity
+│   │   ├── dto
+│   │   └── strategy
+│   └── resources
+└── test
+```
+
+---
+
+## 👨‍💻 Autor
+
+**Aldir Neto**
+
+Desenvolvedor Back-end Java focado em APIs REST, arquitetura de software e boas práticas de engenharia.
