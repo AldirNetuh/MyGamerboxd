@@ -1,4 +1,5 @@
 package com.aldirneto.mygamerboxd.controller;
+
 import com.aldirneto.mygamerboxd.dto.UsuarioRequestDTO;
 import com.aldirneto.mygamerboxd.dto.UsuarioResponseDTO;
 import com.aldirneto.mygamerboxd.exception.ResourceNotFoundException;
@@ -6,7 +7,8 @@ import com.aldirneto.mygamerboxd.service.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,7 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UsuarioController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class UsuarioControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -25,6 +28,7 @@ class UsuarioControllerTest {
     private UsuarioService service;
     @Autowired
     private ObjectMapper objectMapper;
+
     @Test
     void deveRetornar201AoCadastrar() throws Exception {
         UsuarioRequestDTO req = new UsuarioRequestDTO("aldir", "aldir@test.com", "123", "ADMIN", "CHAVE");
@@ -36,6 +40,7 @@ class UsuarioControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.username").value("aldir"));
     }
+
     @Test
     void deveRetornar404QuandoNaoEncontrar() throws Exception {
         when(service.buscarPorId(99L)).thenThrow(new ResourceNotFoundException("Usuário não encontrado."));
