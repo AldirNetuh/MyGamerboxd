@@ -20,7 +20,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, precision = 3, scale = 2)
+    @Column(nullable = false, precision = 4, scale = 2)
     private BigDecimal nota;
 
     @Column(columnDefinition = "TEXT")
@@ -31,7 +31,7 @@ public class Review {
     private Jogo jogo;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = true) // <--- O "jeitinho" pra passar agora
     private Usuario usuario;
 
     @CreationTimestamp

@@ -19,15 +19,17 @@ public class GeneroService {
     private GeneroRepository generoRepository;
 
     private GeneroResponseDTO converterParaDTO(Genero genero) {
-        GeneroResponseDTO dto = new GeneroResponseDTO();
-        dto.setId(genero.getId());
-        dto.setNome(genero.getNome());
-        return dto;
+        return new GeneroResponseDTO(
+                genero.getId(),
+                genero.getNome()
+        );
     }
 
     @Transactional(readOnly = true)
     public List<GeneroResponseDTO> listarTodos() {
-        return generoRepository.findAll().stream().map(this::converterParaDTO).collect(Collectors.toList());
+        return generoRepository.findAll().stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -40,7 +42,7 @@ public class GeneroService {
     @Transactional
     public GeneroResponseDTO criar(GeneroRequestDTO dto) {
         Genero genero = new Genero();
-        genero.setNome(dto.getNome());
+        genero.setNome(dto.nome());
         return converterParaDTO(generoRepository.save(genero));
     }
 
@@ -48,7 +50,7 @@ public class GeneroService {
     public GeneroResponseDTO atualizar(Long id, GeneroRequestDTO dto) {
         Genero genero = generoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Gênero não encontrado."));
-        genero.setNome(dto.getNome());
+        genero.setNome(dto.nome());
         return converterParaDTO(generoRepository.save(genero));
     }
 

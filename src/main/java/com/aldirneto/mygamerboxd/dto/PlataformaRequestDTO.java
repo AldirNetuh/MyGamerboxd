@@ -1,8 +1,6 @@
 package com.aldirneto.mygamerboxd.dto;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-@Data
-public class PlataformaRequestDTO {
+public record PlataformaRequestDTO(
     @NotBlank(message = "O nome da plataforma é obrigatório.")
-    private String nome;
-}
+    String nome
+) {}

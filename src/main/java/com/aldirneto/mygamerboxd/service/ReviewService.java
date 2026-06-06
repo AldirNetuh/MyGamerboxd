@@ -1,5 +1,4 @@
 package com.aldirneto.mygamerboxd.service;
-
 import com.aldirneto.mygamerboxd.dto.ReviewRequestDTO;
 import com.aldirneto.mygamerboxd.dto.ReviewResponseDTO;
 import com.aldirneto.mygamerboxd.entity.Jogo;
@@ -18,53 +17,46 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
-
     @Autowired
     private ReviewRepository reviewRepository;
-
     @Autowired
     private JogoRepository jogoRepository;
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     private ReviewResponseDTO converterParaDTO(Review review) {
-        ReviewResponseDTO dto = new ReviewResponseDTO();
-        dto.setId(review.getId());
-        dto.setNota(review.getNota());
-        dto.setTexto(review.getTexto());
-        dto.setJogoId(review.getJogo().getId());
-        dto.setUsernameUsuario(review.getUsuario().getUsername());
-        return dto;
+        return new ReviewResponseDTO(
+                review.getId(),
+                review.getNota(),
+                review.getTexto(),
+                review.getJogo().getId(),
+                review.getUsuario().getUsername()
+        );
     }
-
     @Transactional(readOnly = true)
     public List<ReviewResponseDTO> listarTodas() {
-        return reviewRepository.findAll().stream().map(this::converterParaDTO).collect(Collectors.toList());
+        return reviewRepository.findAll().stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
-
     @Transactional(readOnly = true)
     public List<ReviewResponseDTO> listarPorJogo(Long jogoId) {
-        return reviewRepository.findByJogoId(jogoId).stream().map(this::converterParaDTO).collect(Collectors.toList());
+        return reviewRepository.findByJogoId(jogoId).stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
-
     @Transactional
     public ReviewResponseDTO criar(ReviewRequestDTO dto) {
-        Jogo jogo = jogoRepository.findById(dto.getJogoId())
-                .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado."));
-        
-        Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
+        Jogo jogo = jogoRepository.findById(dto.jogoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado."));      
+        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
-
         Review review = new Review();
-        review.setNota(dto.getNota());
-        review.setTexto(dto.getTexto());
+        review.setNota(dto.nota());
+        review.setTexto(dto.texto());
         review.setJogo(jogo);
         review.setUsuario(usuario);
-
         return converterParaDTO(reviewRepository.save(review));
     }
-
     @Transactional
     public void deletar(Long id) {
         reviewRepository.deleteById(id);

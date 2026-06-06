@@ -16,51 +16,46 @@ import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     private UsuarioResponseDTO converterParaDTO(Usuario usuario) {
-        UsuarioResponseDTO dto = new UsuarioResponseDTO();
-        dto.setId(usuario.getId());
-        dto.setUsername(usuario.getUsername());
-        dto.setEmail(usuario.getEmail());
-        dto.setTipoUsuario(usuario instanceof Admin ? "ADMIN" : "JOGADOR");
-        return dto;
+        String tipo = usuario instanceof Admin ? "ADMIN" : "JOGADOR";
+        return new UsuarioResponseDTO(
+                usuario.getId(),
+                usuario.getUsername(),
+                usuario.getEmail(),
+                tipo
+        );
     }
-
     @Transactional(readOnly = true)
     public List<UsuarioResponseDTO> listarTodos() {
-        return usuarioRepository.findAll().stream().map(this::converterParaDTO).collect(Collectors.toList());
+        return usuarioRepository.findAll().stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
-
     @Transactional(readOnly = true)
     public UsuarioResponseDTO buscarPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
         return converterParaDTO(usuario);
     }
-
     @Transactional
     public UsuarioResponseDTO cadastrar(UsuarioRequestDTO dto) {
-        // Implementação do requisito de POO: Decidindo qual classe filha instanciar (Polimorfismo/Herança)
         Usuario usuario;
-        if ("ADMIN".equalsIgnoreCase(dto.getTipoUsuario())) {
+        if ("ADMIN".equalsIgnoreCase(dto.tipoUsuario())) {
             Admin admin = new Admin();
-            admin.setChaveSeguranca(dto.getChaveSeguranca());
+            admin.setChaveSeguranca(dto.chaveSeguranca());
             usuario = admin;
         } else {
             Jogador jogador = new Jogador();
             usuario = jogador;
         }
-
-        usuario.setUsername(dto.getUsername());
-        usuario.setEmail(dto.getEmail());
-        usuario.setSenha(dto.getSenha()); 
-
+        usuario.setUsername(dto.username());
+        usuario.setEmail(dto.email());
+        usuario.setSenha(dto.senha()); 
         return converterParaDTO(usuarioRepository.save(usuario));
     }
-
     @Transactional
     public void deletar(Long id) {
         usuarioRepository.deleteById(id);
