@@ -1,12 +1,10 @@
 package com.aldirneto.mygamerboxd.dto;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 import java.util.Set;
-@Data
-public class JogoRequestDTO {  
+public record JogoRequestDTO(
     @NotBlank(message = "O título do jogo é obrigatório.")
-    private String titulo;
-    private String descricao;
-    private Set<Long> generosIds;
-    private Set<Long> plataformasIds;
-}
+    String titulo,
+    String descricao,
+    Set<Long> generosIds,
+    Set<Long> plataformasIds
+) {}

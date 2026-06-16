@@ -19,15 +19,17 @@ public class PlataformaService {
     private PlataformaRepository plataformaRepository;
 
     private PlataformaResponseDTO converterParaDTO(Plataforma plataforma) {
-        PlataformaResponseDTO dto = new PlataformaResponseDTO();
-        dto.setId(plataforma.getId());
-        dto.setNome(plataforma.getNome());
-        return dto;
+        return new PlataformaResponseDTO(
+                plataforma.getId(),
+                plataforma.getNome()
+        );
     }
 
     @Transactional(readOnly = true)
     public List<PlataformaResponseDTO> listarTodas() {
-        return plataformaRepository.findAll().stream().map(this::converterParaDTO).collect(Collectors.toList());
+        return plataformaRepository.findAll().stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -40,7 +42,7 @@ public class PlataformaService {
     @Transactional
     public PlataformaResponseDTO criar(PlataformaRequestDTO dto) {
         Plataforma plataforma = new Plataforma();
-        plataforma.setNome(dto.getNome());
+        plataforma.setNome(dto.nome());
         return converterParaDTO(plataformaRepository.save(plataforma));
     }
 
@@ -48,7 +50,7 @@ public class PlataformaService {
     public PlataformaResponseDTO atualizar(Long id, PlataformaRequestDTO dto) {
         Plataforma plataforma = plataformaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Plataforma não encontrada."));
-        plataforma.setNome(dto.getNome());
+        plataforma.setNome(dto.nome());
         return converterParaDTO(plataformaRepository.save(plataforma));
     }
 

@@ -1,7 +1,5 @@
 package com.aldirneto.mygamerboxd.dto;
-import lombok.Data;
-@Data
-public class PlataformaResponseDTO {
-    private Long id;
-    private String nome;
-}
+public record PlataformaResponseDTO(
+    Long id,
+    String nome
+) {}
